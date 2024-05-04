@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_tickets">
+
+    <fragment
+        android:id="@+id/navigation_hotels"
+        android:name="com.example.tickets.ui.hotels.HotelsFragment"
+        android:label="@string/hotels"
+        tools:layout="@layout/fragment_hotels" />
+
+    <fragment
+        android:id="@+id/navigation_tickets"
+        android:name="com.example.tickets.ui.offers.OffersFragment"
+        android:label="@string/tickets"
+        tools:layout="@layout/fragment_offers" />
+
+    <fragment
+        android:id="@+id/navigation_short_path"
+        android:name="com.example.tickets.ui.short_path.ShortPathFragment"
+        android:label="@string/short_path"
+        tools:layout="@layout/fragment_short_path" />
+
+    <fragment
+        android:id="@+id/navigation_subscribes"
+        android:name="com.example.tickets.ui.short_path.ShortPathFragment"
+        android:label="@string/subscribes"
+        tools:layout="@layout/fragment_subscribes" />
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.example.tickets.ui.short_path.ShortPathFragment"
+        android:label="@string/profile"
+        tools:layout="@layout/fragment_profile" />
+</navigation>

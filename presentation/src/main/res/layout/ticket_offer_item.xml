@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="296dp"
+    android:layout_height="56dp"
+    android:paddingTop="10dp"
+    android:layout_marginTop="10dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/round_icon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="17dp"
+        app:layout_constraintStart_toEndOf="@id/round_icon"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="6dp"
+        style="@style/Text_14"
+        android:textColor="@color/white"
+        />
+
+    <TextView
+        android:id="@+id/time_range"
+        android:layout_width="wrap_content"
+        android:layout_height="17dp"
+        app:layout_constraintStart_toEndOf="@id/round_icon"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="5dp"
+        style="@style/Text_14"
+        android:textColor="@color/white"
+        />
+
+    <ImageView
+        android:id="@+id/right_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="2dp"
+        android:src="@drawable/right_arrow"/>
+
+    <TextView
+        android:id="@+id/price"
+        android:layout_width="wrap_content"
+        android:layout_height="17dp"
+        app:layout_constraintEnd_toStartOf="@id/right_arrow"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/Text_14"
+        android:textColor="@color/special_blue"
+        />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/basic_grey_4"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

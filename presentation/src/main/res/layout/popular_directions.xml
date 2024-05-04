@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/search"
+    android:layout_width="328dp"
+    android:layout_height="216dp"
+    android:background="@drawable/custom_rectangle_grey_3_16"
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/stambul_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="16dp"
+        >
+        <ImageView
+            android:id="@+id/stambul_image"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/stambul"
+            />
+
+        <TextView
+            android:id="@+id/stambul_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/stambul_image"
+            app:layout_constraintTop_toTopOf="@id/stambul_image"
+            android:layout_marginStart="8dp"
+            android:text="@string/stambul"
+            android:textColor="@color/white"
+            style="@style/Text_16"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/stambul_image"
+            app:layout_constraintTop_toBottomOf="@id/stambul_text"
+            android:layout_marginStart="8dp"
+            android:text="@string/popular_direction"
+            android:textColor="@color/basic_grey_5"
+            style="@style/Text_14"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <View
+        android:id="@+id/divider_1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/basic_grey_4"
+        app:layout_constraintTop_toBottomOf="@id/stambul_layout"
+        />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/sochi_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/divider_1"
+        app:layout_constraintStart_toStartOf="parent"
+        >
+        <ImageView
+                android:id="@+id/sochi_image"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp"
+                android:src="@drawable/sochi"
+                />
+
+            <TextView
+                android:id="@+id/sochi_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/sochi_image"
+                app:layout_constraintTop_toTopOf="@id/sochi_image"
+                android:layout_marginStart="8dp"
+                android:text="@string/sochi"
+                android:textColor="@color/white"
+                style="@style/Text_16"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/sochi_image"
+                app:layout_constraintTop_toBottomOf="@id/sochi_text"
+                android:layout_marginStart="8dp"
+                android:text="@string/popular_direction"
+                android:textColor="@color/basic_grey_5"
+                style="@style/Text_14"
+                />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/divider_2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/basic_grey_4"
+        app:layout_constraintTop_toBottomOf="@id/sochi_layout"
+        />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/phuket_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/divider_2"
+        app:layout_constraintStart_toStartOf="parent"
+        >
+            <ImageView
+                android:id="@+id/phuket_image"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp"
+                android:src="@drawable/phuket"
+                />
+
+            <TextView
+                android:id="@+id/phuket_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/phuket_image"
+                app:layout_constraintTop_toTopOf="@id/phuket_image"
+                android:layout_marginStart="8dp"
+                android:text="@string/phuket"
+                android:textColor="@color/white"
+                style="@style/Text_16"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/phuket_image"
+                app:layout_constraintTop_toBottomOf="@id/phuket_text"
+                android:layout_marginStart="8dp"
+                android:text="@string/popular_direction"
+                android:textColor="@color/basic_grey_5"
+                style="@style/Text_14"
+                />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    <View
+        android:id="@+id/divider3"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/basic_grey_4"
+        app:layout_constraintTop_toBottomOf="@id/phuket_layout"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

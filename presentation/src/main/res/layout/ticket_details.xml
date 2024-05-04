@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/back_date"
+        android:layout_width="105dp"
+        android:layout_height="33dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="end|center_vertical"
+        android:paddingEnd="10dp"
+        android:background="@drawable/custom_rectangle_grey_3_50"
+        android:fontFamily="@font/sf_pro_display_regular"
+        android:textSize="14sp"
+        android:textColor="@color/white"
+        android:text="@string/back"
+        />
+
+    <ImageView
+        android:id="@+id/plus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/back_date"
+        app:layout_constraintTop_toTopOf="@id/back_date"
+        app:layout_constraintBottom_toBottomOf="@id/back_date"
+        android:layout_marginStart="10dp"
+        android:src="@drawable/plus"
+        />
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="88dp"
+        android:layout_height="33dp"
+        app:layout_constraintStart_toEndOf="@id/back_date"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="8dp"
+        android:gravity="center"
+        android:background="@drawable/custom_rectangle_grey_3_50"
+        />
+
+    <TextView
+        android:id="@+id/num_and_type"
+        android:layout_width="104dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toEndOf="@id/date"
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="end|center_vertical"
+        android:paddingEnd="10dp"
+        android:background="@drawable/custom_rectangle_grey_3_50"
+        android:fontFamily="@font/sf_pro_display_regular"
+        android:textSize="14sp"
+        android:textColor="@color/white"
+        android:text="@string/num_and_type"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/num_and_type"
+        app:layout_constraintTop_toTopOf="@id/num_and_type"
+        app:layout_constraintBottom_toBottomOf="@id/num_and_type"
+        android:layout_marginStart="10dp"
+        android:src="@drawable/passanger"
+        />
+
+    <ImageView
+        android:id="@+id/filter"
+        android:layout_width="33dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toEndOf="@id/num_and_type"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/custom_rectangle_grey_3_50"
+        android:src="@drawable/filter"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
