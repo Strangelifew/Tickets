@@ -5,11 +5,13 @@ import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
-import android.text.Html.*
+import android.text.Html.FROM_HTML_MODE_LEGACY
+import android.text.Html.fromHtml
 import android.text.Spanned
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.*
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.widget.addTextChangedListener
@@ -24,6 +26,7 @@ import com.example.tickets.App
 import com.example.tickets.databinding.FragmentOffersBinding
 import com.example.tickets.databinding.HintsBinding
 import com.example.tickets.databinding.PopularDirectionsBinding
+import com.example.tickets.model.AnyPO
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -46,7 +49,7 @@ class OffersFragment : Fragment() {
     private val binding get() = _binding!!
 
     @Inject
-    lateinit var adapter: ListDelegationAdapter<List<Any>>
+    lateinit var adapter: ListDelegationAdapter<List<AnyPO>>
 
     @Inject
     lateinit var viewModel: OffersViewModel

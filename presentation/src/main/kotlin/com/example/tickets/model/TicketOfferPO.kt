@@ -7,4 +7,4 @@ data class TicketOfferPO(
     val title: String,
     val timeRange: List<String>,
     val price: Price
-)
+) : AnyPO

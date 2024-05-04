@@ -3,6 +3,7 @@ package com.example.tickets.di
 import com.example.tickets.R
 import com.example.tickets.databinding.MusicTravelItemBinding
 import com.example.tickets.databinding.TicketOfferItemBinding
+import com.example.tickets.model.AnyPO
 import com.example.tickets.model.OfferPO
 import com.example.tickets.model.TicketOfferPO
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
@@ -14,7 +15,7 @@ import dagger.Provides
 @Module
 class AdapterModule {
     @Provides
-    fun offersAdapter(): ListDelegationAdapter<List<Any>> =
+    fun offersAdapter(): ListDelegationAdapter<List<AnyPO>> =
         ListDelegationAdapter(
             adapterDelegateViewBinding<OfferPO, _, MusicTravelItemBinding>(
                 { inflater, parent ->
