@@ -3,7 +3,9 @@ package com.example.tickets.ui.offers
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Html.FROM_HTML_MODE_LEGACY
 import android.text.Html.fromHtml
@@ -13,6 +15,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.TextView
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -34,6 +37,7 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 import javax.inject.Inject
+import kotlin.reflect.KProperty0
 
 
 private val dayAndMonthFormat = SimpleDateFormat("dd MMM", Locale("ru"))
@@ -54,12 +58,19 @@ class OffersFragment : Fragment() {
     @Inject
     lateinit var viewModel: OffersViewModel
 
+    private var preferences: SharedPreferences? = null
+
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View = FragmentOffersBinding.inflate(inflater, container, false).run {
 
         super.onCreateView(inflater, container, savedInstanceState)
+        preferences = activity?.getPreferences(Context.MODE_PRIVATE)?.also {
+            fun KProperty0<EditText>.readFromCache() = get().setText(it.getString(name, ""))
+            search::departure.readFromCache()
+            search::arrival.readFromCache()
+        }
         (requireActivity().applicationContext as App).component.inject(this@OffersFragment)
         _binding = this
 
@@ -72,8 +83,16 @@ class OffersFragment : Fragment() {
         search.arrival.setOnFocusChangeListener { _, hasFocus ->
             onArrivalFocusChanged(hasFocus)
         }
+
+        fun SharedPreferences.Editor.writeProperty(property: KProperty0<EditText>) =
+            putString(property.name, "${property().text}")
+
         search.arrival.addTextChangedListener { _ ->
+            preferences?.edit()?.writeProperty(search::arrival)?.apply()
             if (search.arrival.text.isNotBlank()) goToScreen3() else goToScreen2()
+        }
+        search.departure.addTextChangedListener { _ ->
+            preferences?.edit()?.writeProperty(search::departure)?.apply()
         }
         search.directionsExchange.setOnClickListener {
             val tmp = search.arrival.text
@@ -97,6 +116,7 @@ class OffersFragment : Fragment() {
             }
         }
         hints.init()
+        if (search.arrival.text.isNotBlank()) goToScreen3()
         root
     }
 
