@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/basic_black"
-    tools:context=".ui.subscribes.SubscribesFragment">
+    android:background="@color/basic_black">
 
     <TextView
         android:id="@+id/text_subscribes"
@@ -15,8 +13,9 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:textAlignment="center"
-        android:textSize="20sp"
-        android:text="@string/stub"
+        android:fontFamily="@font/sf_pro_display_sembold"
+        android:text="@string/subscribes"
+        style="@style/Text_20"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

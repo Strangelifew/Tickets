@@ -13,8 +13,7 @@
         android:gravity="end|center_vertical"
         android:paddingEnd="10dp"
         android:background="@drawable/custom_rectangle_grey_3_50"
-        android:fontFamily="@font/sf_pro_display_regular"
-        android:textSize="14sp"
+        style="@style/Text_14"
         android:textColor="@color/white"
         android:text="@string/back"
         />
@@ -37,8 +36,9 @@
         app:layout_constraintStart_toEndOf="@id/back_date"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginStart="8dp"
-        android:gravity="center"
         android:background="@drawable/custom_rectangle_grey_3_50"
+        style="@style/Text_14"
+        android:gravity="center"
         />
 
     <TextView
@@ -51,8 +51,7 @@
         android:gravity="end|center_vertical"
         android:paddingEnd="10dp"
         android:background="@drawable/custom_rectangle_grey_3_50"
-        android:fontFamily="@font/sf_pro_display_regular"
-        android:textSize="14sp"
+        style="@style/Text_14"
         android:textColor="@color/white"
         android:text="@string/num_and_type"
         />

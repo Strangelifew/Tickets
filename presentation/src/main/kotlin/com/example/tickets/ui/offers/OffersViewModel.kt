@@ -7,8 +7,7 @@ import com.example.domain.model.TicketOffer
 import com.example.domain.usecase.OfferUseCases
 import com.example.domain.usecase.TicketOfferUseCases
 import com.example.tickets.model.AnyPO
-import com.example.tickets.model.OfferPO
-import com.example.tickets.model.TicketOfferPO
+import com.example.tickets.model.toPO
 import com.example.tickets.ui.offers.ItemType.OFFER
 import com.example.tickets.ui.offers.ItemType.TICKET_OFFER
 import kotlinx.coroutines.flow.Flow
@@ -18,9 +17,12 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import java.util.Calendar
 import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class OffersViewModel @Inject constructor(
     private val offerUseCases: OfferUseCases,
     private val ticketOfferUseCases: TicketOfferUseCases
@@ -31,6 +33,10 @@ class OffersViewModel @Inject constructor(
     private val _items = MutableStateFlow<List<AnyPO>>(emptyList())
 
     val items: Flow<List<AnyPO>> by ::_items
+
+    var calendar: Calendar = Calendar.getInstance()
+
+    var backCalendar: Calendar? = null
 
     init {
         viewModelScope.launch {
@@ -53,6 +59,3 @@ class OffersViewModel @Inject constructor(
 
 enum class ItemType { OFFER, TICKET_OFFER }
 
-private fun Offer.toPO() = OfferPO(id, title, town, price)
-
-private fun TicketOffer.toPO() = TicketOfferPO(id, title, timeRange, price)

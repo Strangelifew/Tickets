@@ -1,7 +1,8 @@
 package com.example.domain
 
 import com.example.domain.model.Ticket
+import kotlinx.coroutines.flow.Flow
 
 interface TicketRepository {
-    fun getTickets(): List<Ticket>
+    val tickets: Flow<List<Ticket>>
 }

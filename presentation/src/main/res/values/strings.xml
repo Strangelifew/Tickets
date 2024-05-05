@@ -23,4 +23,6 @@
     <string name="allowed_input_symbols">абвгдеёжзиклмнопрстуфхцчшщъыьэюя АБВГДЕЁЖЗИКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ-1234567890</string>
     <string name="stub">Заглушка</string>
     <string name="watch_all_tickets">Посмотреть все билеты</string>
+    <string name="filter">Фильтр</string>
+    <string name="price_graph">График цен</string>
 </resources>

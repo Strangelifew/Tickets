@@ -5,7 +5,6 @@ import com.example.domain.model.Offer
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.serialization.json.Json
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
@@ -14,7 +13,7 @@ class OfferRepositoryImpl @Inject constructor() : OfferRepository {
         while (true) {
             delay(5.seconds)
             emit(
-                Json.decodeFromString(
+                json.decodeFromString(
                     this::class.java.classLoader.getResourceAsStream("offers.json")!!.reader()
                         .readText()
                 )

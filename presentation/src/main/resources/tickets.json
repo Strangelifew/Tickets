@@ -30,7 +30,7 @@
         "size": "55x20x40"
       },
       "is_returnable": false,
-      "is_exchangable": true
+      "is_exchangeable": true
     },
     {
       "id": 101,
@@ -62,7 +62,7 @@
         "size": "36x30x27"
       },
       "is_returnable": false,
-      "is_exchangable": true
+      "is_exchangeable": true
     },
     {
       "id": 102,
@@ -91,7 +91,7 @@
         "size": "55x20x40"
       },
       "is_returnable": false,
-      "is_exchangable": false
+      "is_exchangeable": false
     },
     {
       "id": 103,
@@ -124,7 +124,7 @@
         "size": "55x20x40"
       },
       "is_returnable": true,
-      "is_exchangable": true
+      "is_exchangeable": true
     },
     {
       "id": 104,
@@ -156,7 +156,7 @@
         "size": "55x20x40"
       },
       "is_returnable": false,
-      "is_exchangable": true
+      "is_exchangeable": true
     },
     {
       "id": 105,
@@ -188,7 +188,7 @@
         "size": "55x20x40"
       },
       "is_returnable": true,
-      "is_exchangable": true
+      "is_exchangeable": true
     },
     {
       "id": 106,
@@ -219,6 +219,6 @@
         "has_hand_luggage": false
       },
       "is_returnable": false,
-      "is_exchangable": false
+      "is_exchangeable": false
     }
   ]

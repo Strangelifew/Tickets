@@ -16,8 +16,7 @@
         android:layout_height="52dp"
         app:layout_constraintBaseline_toTopOf="parent"
         android:text="@string/cheap_tickets"
-        android:fontFamily="@font/sf_pro_display_sembold"
-        android:textSize="22sp"
+        style="@style/Text_22"
         android:textColor="@color/tickets_grey"
         android:gravity="center"
         />
@@ -89,8 +88,7 @@
         app:layout_constraintTop_toBottomOf="@id/ticket_details"
         android:layout_marginTop="28dp"
         android:text="@string/music_travel"
-        android:fontFamily="@font/sf_pro_display_sembold"
-        android:textSize="22sp"
+        style="@style/Text_22"
         android:textColor="@color/tickets_grey"
         android:gravity="start"
         />

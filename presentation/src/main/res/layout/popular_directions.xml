@@ -32,9 +32,9 @@
             app:layout_constraintStart_toEndOf="@id/stambul_image"
             app:layout_constraintTop_toTopOf="@id/stambul_image"
             android:layout_marginStart="8dp"
+            style="@style/Text_16"
             android:text="@string/stambul"
             android:textColor="@color/white"
-            style="@style/Text_16"
             />
 
         <TextView
@@ -43,9 +43,9 @@
             app:layout_constraintStart_toEndOf="@id/stambul_image"
             app:layout_constraintTop_toBottomOf="@id/stambul_text"
             android:layout_marginStart="8dp"
+            style="@style/Text_14"
             android:text="@string/popular_direction"
             android:textColor="@color/basic_grey_5"
-            style="@style/Text_14"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -85,9 +85,9 @@
                 app:layout_constraintStart_toEndOf="@id/sochi_image"
                 app:layout_constraintTop_toTopOf="@id/sochi_image"
                 android:layout_marginStart="8dp"
+                style="@style/Text_16"
                 android:text="@string/sochi"
                 android:textColor="@color/white"
-                style="@style/Text_16"
                 />
 
             <TextView
@@ -96,9 +96,9 @@
                 app:layout_constraintStart_toEndOf="@id/sochi_image"
                 app:layout_constraintTop_toBottomOf="@id/sochi_text"
                 android:layout_marginStart="8dp"
+                style="@style/Text_14"
                 android:text="@string/popular_direction"
                 android:textColor="@color/basic_grey_5"
-                style="@style/Text_14"
                 />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -138,9 +138,9 @@
                 app:layout_constraintStart_toEndOf="@id/phuket_image"
                 app:layout_constraintTop_toTopOf="@id/phuket_image"
                 android:layout_marginStart="8dp"
+                style="@style/Text_16"
                 android:text="@string/phuket"
                 android:textColor="@color/white"
-                style="@style/Text_16"
                 />
 
             <TextView
@@ -149,9 +149,9 @@
                 app:layout_constraintStart_toEndOf="@id/phuket_image"
                 app:layout_constraintTop_toBottomOf="@id/phuket_text"
                 android:layout_marginStart="8dp"
+                style="@style/Text_14"
                 android:text="@string/popular_direction"
                 android:textColor="@color/basic_grey_5"
-                style="@style/Text_14"
                 />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

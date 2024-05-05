@@ -21,8 +21,8 @@
         app:layout_constraintTop_toBottomOf="@id/path"
         app:layout_constraintStart_toStartOf="parent"
         android:gravity="center"
-        android:text="@string/path"
         style="@style/Text_14"
+        android:text="@string/path"
         android:textColor="@color/white"
         />
 
@@ -43,8 +43,8 @@
         app:layout_constraintTop_toBottomOf="@id/path"
         app:layout_constraintStart_toEndOf="@id/text_path"
         android:gravity="center"
-        android:text="@string/anywhere"
         style="@style/Text_14"
+        android:text="@string/anywhere"
         android:textColor="@color/white"
         />
 
@@ -65,8 +65,8 @@
         app:layout_constraintTop_toBottomOf="@id/weekends"
         app:layout_constraintStart_toEndOf="@id/text_anywhere"
         android:gravity="center"
-        android:text="@string/weekends"
         style="@style/Text_14"
+        android:text="@string/weekends"
         android:textColor="@color/white"
         />
 
@@ -87,8 +87,8 @@
         app:layout_constraintTop_toBottomOf="@id/hot_tickets"
         app:layout_constraintStart_toEndOf="@id/text_weekends"
         android:gravity="center"
-        android:text="@string/hot_tickets"
         style="@style/Text_14"
+        android:text="@string/hot_tickets"
         android:textColor="@color/white"
         />
 

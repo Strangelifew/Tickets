@@ -1,10 +1,10 @@
 package com.example.tickets.ui.offers
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Html.FROM_HTML_MODE_LEGACY
@@ -19,6 +19,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -26,12 +27,19 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tickets.App
+import com.example.tickets.R
 import com.example.tickets.databinding.FragmentOffersBinding
 import com.example.tickets.databinding.HintsBinding
 import com.example.tickets.databinding.PopularDirectionsBinding
 import com.example.tickets.model.AnyPO
+import com.example.tickets.ui.flight.CommonViewModel
+import com.example.tickets.ui.offers.OffersFragment.Screen.SCREEN_1
+import com.example.tickets.ui.offers.OffersFragment.Screen.SCREEN_2
+import com.example.tickets.ui.offers.OffersFragment.Screen.SCREEN_3
+import com.example.tickets.ui.tickets.TicketsFragment
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import kotlinx.coroutines.launch
+import java.text.DateFormatSymbols
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -40,16 +48,22 @@ import javax.inject.Inject
 import kotlin.reflect.KProperty0
 
 
-private val dayAndMonthFormat = SimpleDateFormat("dd MMM", Locale("ru"))
+val locale = Locale("ru")
+private val dayAndMonthFormat = SimpleDateFormat("dd MMM", locale).apply {
+    dateFormatSymbols = DateFormatSymbols.getInstance(locale).apply {
+        shortMonths = arrayOf(
+            "янв", "фев", "мар", "апр", "май", "июн",
+            "июл", "авг", "сен", "окт", "ноя", "дек"
+        )
+    }
+}
 
-private val dayOfWeekFormat = SimpleDateFormat("EE", Locale("ru"))
+private val dayOfWeekFormat = SimpleDateFormat("EE", locale)
 
 class OffersFragment : Fragment() {
 
     private var _binding: FragmentOffersBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     @Inject
@@ -58,40 +72,33 @@ class OffersFragment : Fragment() {
     @Inject
     lateinit var viewModel: OffersViewModel
 
+    @Inject
+    lateinit var commonViewModel: CommonViewModel
+
     private var preferences: SharedPreferences? = null
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View = FragmentOffersBinding.inflate(inflater, container, false).run {
 
         super.onCreateView(inflater, container, savedInstanceState)
-        preferences = activity?.getPreferences(Context.MODE_PRIVATE)?.also {
-            fun KProperty0<EditText>.readFromCache() = get().setText(it.getString(name, ""))
-            search::departure.readFromCache()
-            search::arrival.readFromCache()
-        }
         (requireActivity().applicationContext as App).component.inject(this@OffersFragment)
         _binding = this
+        preferences = initPreferences()
 
-        ticketDetails.date.text = format(Date())
-        itemsList.root.let {
-            it.layoutManager = LinearLayoutManager(activity, RecyclerView.HORIZONTAL, false)
-            it.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
-            it.adapter = adapter
+        ticketDetails.date.text = format(viewModel.calendar.time)
+        viewModel.backCalendar?.time?.let {
+            ticketDetails.plus.visibility = GONE
+            ticketDetails.backDate.text = format(it)
         }
-        search.arrival.setOnFocusChangeListener { _, hasFocus ->
-            onArrivalFocusChanged(hasFocus)
-        }
+        initRecycleView()
+        search.arrival.setOnFocusChangeListener { _, hasFocus -> onArrivalFocusChanged(hasFocus) }
 
-        fun SharedPreferences.Editor.writeProperty(property: KProperty0<EditText>) =
-            putString(property.name, "${property().text}")
-
-        search.arrival.addTextChangedListener { _ ->
-            preferences?.edit()?.writeProperty(search::arrival)?.apply()
-            if (search.arrival.text.isNotBlank()) goToScreen3() else goToScreen2()
-        }
-        search.departure.addTextChangedListener { _ ->
+        search.arrival.addTextChangedListener { onArrivalTextChanged() }
+        search.departure.addTextChangedListener {
             preferences?.edit()?.writeProperty(search::departure)?.apply()
         }
         search.directionsExchange.setOnClickListener {
@@ -99,14 +106,29 @@ class OffersFragment : Fragment() {
             search.arrival.text = search.departure.text
             search.departure.text = tmp
         }
-        ticketDetails.date.setOnClickListener(ticketDetails.date.datePickerListener())
-        ticketDetails.backDate.setOnClickListener(ticketDetails.backDate.datePickerListener {
-            ticketDetails.plus.visibility = GONE
-        })
-        watchAllTickets.setOnClickListener {
-            startActivity(Intent(activity, OffersFragment::class.java))
-        }
+        ticketDetails.date.setOnClickListener(
+            ticketDetails.date.datePickerListener { viewModel.calendar = it }
+        )
+        ticketDetails.backDate.setOnClickListener(
+            ticketDetails.backDate.datePickerListener {
+                viewModel.backCalendar = it
+                ticketDetails.plus.visibility = GONE
+            }
+        )
+        watchAllTickets.setOnClickListener { goToTickets(viewModel.calendar) }
         popularDirections.init()
+        subscribeToItems()
+        hints.init()
+        if (search.arrival.text.isNotBlank()) SCREEN_3(binding, requireActivity(), viewModel)
+        root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun subscribeToItems() {
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.items.collect {
@@ -115,14 +137,42 @@ class OffersFragment : Fragment() {
                 }
             }
         }
-        hints.init()
-        if (search.arrival.text.isNotBlank()) goToScreen3()
-        root
     }
 
-    private fun TextView.datePickerListener(onPick: () -> Unit = {}): (v: View) -> Unit {
-        val calendar = Calendar.getInstance()
-        val listener: (v: View) -> Unit = {
+    private fun FragmentOffersBinding.goToTickets(calendar: Calendar) {
+        commonViewModel.toTickets(
+            calendar = calendar,
+            departure = "${search.departure.text}",
+            arrival = "${search.arrival.text}"
+        )
+        parentFragmentManager.commit { replace(R.id.fragment_container, TicketsFragment()) }
+    }
+
+    private fun FragmentOffersBinding.onArrivalTextChanged() {
+        preferences?.edit()?.writeProperty(search::arrival)?.apply()
+        if (search.arrival.text.isBlank()) SCREEN_2(binding, requireActivity(), viewModel)
+        else SCREEN_3(binding, requireActivity(), viewModel)
+    }
+
+    private fun FragmentOffersBinding.initRecycleView() {
+        itemsList.root.let {
+            it.layoutManager = LinearLayoutManager(activity, RecyclerView.HORIZONTAL, false)
+            it.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
+            it.adapter = adapter
+        }
+    }
+
+    private fun initPreferences(): SharedPreferences? =
+        activity?.getPreferences(Context.MODE_PRIVATE)?.also {
+            fun KProperty0<EditText>.readFromCache() = get().setText(it.getString(name, ""))
+            binding.search::departure.readFromCache()
+            binding.search::arrival.readFromCache()
+        }
+
+    private fun TextView.datePickerListener(
+        onPick: (Calendar) -> Unit
+    ): (v: View) -> Unit = Calendar.getInstance().let { calendar ->
+        {
             DatePickerDialog(
                 requireContext(),
                 { _, year, month, day ->
@@ -130,14 +180,13 @@ class OffersFragment : Fragment() {
                     calendar[Calendar.MONTH] = month
                     calendar[Calendar.DAY_OF_MONTH] = day
                     text = format(calendar.time)
-                    onPick()
+                    onPick(calendar)
                 },
                 calendar[Calendar.YEAR],
                 calendar[Calendar.MONTH],
                 calendar[Calendar.DAY_OF_MONTH]
             ).show()
         }
-        return listener
     }
 
     private fun format(date: Date): Spanned = fromHtml(
@@ -148,56 +197,6 @@ class OffersFragment : Fragment() {
         }</font>",
         FROM_HTML_MODE_LEGACY
     )
-
-    private fun goToScreen1() {
-        binding.run {
-            hints.root.visibility = GONE
-            listTitle.visibility = VISIBLE
-            leftArrow.visibility = GONE
-            itemsList.root.visibility = VISIBLE
-            search.directionsExchange.visibility = GONE
-            ticketDetails.root.visibility = GONE
-            popularDirections.root.visibility = GONE
-            screenTitle.visibility = VISIBLE
-            watchAllTickets.visibility = GONE
-            listTitle.text = "Музыкально отлететь"
-        }
-    }
-
-    private fun goToScreen2() {
-        binding.run {
-            hints.root.visibility = VISIBLE
-            listTitle.visibility = GONE
-            leftArrow.visibility = GONE
-            itemsList.root.visibility = GONE
-            search.directionsExchange.visibility = GONE
-            ticketDetails.root.visibility = GONE
-            popularDirections.root.visibility = VISIBLE
-            screenTitle.visibility = GONE
-            watchAllTickets.visibility = GONE
-            itemsList.root.layoutManager =
-                LinearLayoutManager(activity, RecyclerView.HORIZONTAL, false)
-            viewModel.itemType = ItemType.OFFER
-        }
-    }
-
-    private fun goToScreen3() {
-        binding.run {
-            hints.root.visibility = GONE
-            listTitle.visibility = VISIBLE
-            leftArrow.visibility = VISIBLE
-            itemsList.root.visibility = VISIBLE
-            search.directionsExchange.visibility = VISIBLE
-            ticketDetails.root.visibility = VISIBLE
-            popularDirections.root.visibility = GONE
-            screenTitle.visibility = GONE
-            watchAllTickets.visibility = VISIBLE
-            listTitle.text = "Прямые рельсы"
-            itemsList.root.layoutManager =
-                LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
-            viewModel.itemType = ItemType.TICKET_OFFER
-        }
-    }
 
     private fun HintsBinding.init() {
         val stubListener: (v: View) -> Unit = {
@@ -211,11 +210,12 @@ class OffersFragment : Fragment() {
     }
 
     private fun onArrivalFocusChanged(hasFocus: Boolean) {
-        when {
-            hasFocus && binding.search.arrival.text.isBlank() -> goToScreen2()
-            binding.search.arrival.text.isBlank() -> goToScreen1()
-            else -> goToScreen3()
+        val screen = when {
+            hasFocus && binding.search.arrival.text.isBlank() -> SCREEN_2
+            binding.search.arrival.text.isBlank() -> SCREEN_1
+            else -> SCREEN_3
         }
+        screen(binding, requireActivity(), viewModel)
     }
 
     private fun PopularDirectionsBinding.init() {
@@ -228,8 +228,56 @@ class OffersFragment : Fragment() {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    private fun SharedPreferences.Editor.writeProperty(property: KProperty0<EditText>) =
+        putString(property.name, "${property().text}")
+
+    private enum class Screen(
+        private val init: FragmentOffersBinding.(Activity, OffersViewModel) -> Unit = { _, _ -> },
+        private vararg val visibleViews: FragmentOffersBinding.() -> View
+    ) {
+        SCREEN_1(
+            { _, _ -> listTitle.text = "Музыкально отлететь" },
+            FragmentOffersBinding::listTitle,
+            { itemsList.root },
+            FragmentOffersBinding::screenTitle
+        ),
+        SCREEN_2(
+            { activity, viewModel ->
+                itemsList.root.layoutManager =
+                    LinearLayoutManager(activity, RecyclerView.HORIZONTAL, false)
+                viewModel.itemType = ItemType.OFFER
+            },
+            { hints.root },
+            { popularDirections.root },
+        ),
+        SCREEN_3(
+            { activity, viewModel ->
+                listTitle.text = "Прямые рельсы"
+                itemsList.root.layoutManager =
+                    LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
+                viewModel.itemType = ItemType.TICKET_OFFER
+            },
+            FragmentOffersBinding::listTitle,
+            FragmentOffersBinding::leftArrow,
+            { itemsList.root },
+            { search.directionsExchange },
+            { ticketDetails.root },
+            FragmentOffersBinding::watchAllTickets
+        );
+
+        operator fun invoke(
+            binding: FragmentOffersBinding,
+            activity: Activity,
+            viewModel: OffersViewModel
+        ) {
+            val allViews = ALL_VIEWS.mapTo(hashSetOf()) { it(binding) }
+            val visibleViews = visibleViews.mapTo(hashSetOf()) { it(binding) }
+            allViews.forEach { it.visibility = (if (it in visibleViews) VISIBLE else GONE) }
+            init(binding, activity, viewModel)
+        }
+
+        private companion object {
+            val ALL_VIEWS = Screen.entries.flatMapTo(hashSetOf()) { it.visibleViews.asIterable() }
+        }
     }
 }
